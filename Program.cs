@@ -36,6 +36,7 @@ namespace EmployeePayrollService
                     }
                 }            
         }
+        //UC-2 retrive data from database
         public static List<Employee> GetEmployeeData()
         {
             List<Employee> employees = new List<Employee>();
@@ -72,13 +73,55 @@ namespace EmployeePayrollService
                 return employees;
             }
         }
-
+        //UC-3 Update salary
+        public static Employee Updata_Salary(Employee employee)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            try
+            {
+                using (connection)
+                {
+                    string spname = "dbo.Updata_Salary";
+                    SqlCommand Command = new SqlCommand(spname, connection);
+                    Command.CommandType = CommandType.StoredProcedure;
+                    Command.Parameters.AddWithValue("@Emp_Id", employee.Emp_Id);
+                    Command.Parameters.AddWithValue("@Emp_Name", employee.Emp_Name);
+                    Command.Parameters.AddWithValue("@Salary", employee.Salary);
+                    employee = new Employee();
+                    connection.Open();
+                    SqlDataReader reader = Command.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            employee.Emp_Id = (int)reader["Emp_Id"];
+                            employee.Emp_Name = (string)reader["Emp_Name"];
+                            employee.Salary = (int)reader["Salary"];
+                            employee.Joining_Date = (DateTime)reader["Joining_Date"];
+                            employee.Gender = (String)reader["Gender"];
+                            employee.Department = (String)reader["Department"];
+                            employee.Address = (string)reader["Address"];                            
+                            employee.Deductions = (int)reader["Deductions"];
+                            employee.Taxable_Pay = (int)reader["Taxable_Pay"];
+                            employee.Income_Tax = (int)reader["Income_Tax"];
+                            employee.Net_Pay = (int)reader["Net_Pay"];
+                        }
+                        connection.Close();
+                        return employee;
+                    }
+                }
+            }
+            catch (EmployeeException)
+            {
+                throw new EmployeeException(EmployeeException.ExceptionType.No_Data_Found, "Data not found...");
+            }
+            return null;
+        }
         static void Main(string[]args)
         {             
             EmployeePayroll.EstablishConnection();
-           EmployeePayroll.GetEmployeeData();
+            EmployeePayroll.GetEmployeeData();
+           
         }
     }
-
-
 }
