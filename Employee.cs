@@ -7,9 +7,9 @@ namespace EmployeePayrollService
 {
     public class Employee
     {
-        public string Emp_Id { get; set; }
+        public int Emp_Id { get; set; }
         public string Emp_Name { get; set; }
-        public string Salary { get; set; }
+        public int Salary { get; set; }
         public DateTime Joining_Date { get; set; }
         public string Gender { get; set; }
         public string Department { get; set; }
