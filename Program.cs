@@ -73,7 +73,7 @@ namespace EmployeePayrollService
                 return employees;
             }
         }
-        //UC-3 Update salary
+        //UC-3 && UC-4 Update salary
         public static Employee Updata_Salary(Employee employee)
         {
             SqlConnection connection = new SqlConnection(connectionString);
@@ -117,11 +117,13 @@ namespace EmployeePayrollService
             }
             return null;
         }
+        
         static void Main(string[]args)
-        {             
+        {
             EmployeePayroll.EstablishConnection();
             EmployeePayroll.GetEmployeeData();
-           
+
+
         }
     }
 }
