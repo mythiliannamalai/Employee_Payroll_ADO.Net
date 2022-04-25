@@ -117,13 +117,58 @@ namespace EmployeePayrollService
             }
             return null;
         }
-        
+        //UC-5 Get data feom particular date range
+        public static List<Employee> GetEmployeeData_FromDateRange(DateTime From_Date, DateTime toDate)
+        {
+            Employee employee;
+            List<Employee> emp = new List<Employee>();
+            SqlConnection connection = new SqlConnection(connectionString);
+            string spname = "GetEmployeeData_FromDateRange";
+            SqlCommand Command = new SqlCommand(spname, connection);
+            Command.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                connection.Open();
+                using (connection)
+                {
+
+                    Command.Parameters.AddWithValue("@From_Date", From_Date);
+                    Command.Parameters.AddWithValue("@toDate", toDate);
+                    SqlDataReader reader = Command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        employee = new Employee
+                        {
+                            Emp_Id = reader.IsDBNull(0) ? default : reader.GetInt32(0),
+                            Emp_Name = reader.IsDBNull(1) ? default : reader.GetString(1),
+                            Salary = reader.IsDBNull(2) ? default : reader.GetInt32(2),
+                            Joining_Date = reader.IsDBNull(3) ? default : reader.GetDateTime(3),
+                            Gender = reader.IsDBNull(4) ? default : reader.GetString(4),
+                            Department = reader.IsDBNull(5) ? default : reader.GetString(5),
+                            Address = reader.IsDBNull(6) ? default : reader.GetString(6),
+                            Deductions = reader.IsDBNull(7) ? default : reader.GetInt32(7),
+                            Taxable_Pay = reader.IsDBNull(8) ? default : reader.GetInt32(8),
+                            Income_Tax = reader.IsDBNull(9) ? default : reader.GetInt32(9),
+                            Net_Pay = reader.IsDBNull(10) ? default : reader.GetInt32(10)
+                        };
+                        Console.WriteLine(employee.Emp_Id + "," + employee.Emp_Name + "," + employee.Salary + "," + employee.Joining_Date + "," + employee.Gender + "," + employee.Department);
+                        emp.Add(employee);
+                        emp.Count();
+                    }
+                    connection.Close();
+                    return emp;
+                }
+            }
+            catch (EmployeeException)
+            {
+                throw new EmployeeException(EmployeeException.ExceptionType.No_Data_Found, "Data not found...");
+            }
+            return null;
+        }
         static void Main(string[]args)
         {
             EmployeePayroll.EstablishConnection();
             EmployeePayroll.GetEmployeeData();
-
-
         }
     }
 }
