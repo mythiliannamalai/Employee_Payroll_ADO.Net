@@ -27,6 +27,7 @@ namespace EmployeePayrollTesting
             employee.Salary = 300000;
             var res = EmployeePayroll.Updata_Salary(employee);
             Assert.AreEqual(employee.Emp_Name,res.Emp_Name);
-        }        
+        }
+        
     }
 }
