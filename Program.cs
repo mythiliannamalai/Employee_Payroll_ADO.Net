@@ -267,10 +267,53 @@ namespace EmployeePayrollService
                     }
                 }
             }
-
             catch (EmployeeException)
             {
                 throw new EmployeeException(EmployeeException.ExceptionType.No_Data_Found, "Contact not added...");
+            }
+            return null;
+        }
+        //UC-12 Delete Contact
+        public static Employee Delete_Contact(Employee employee)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            try
+            {
+                using (connection)
+                {
+                    string spname = "dbo.DeleteEmp_Details";
+                    SqlCommand Command = new SqlCommand(spname, connection);
+                    Command.CommandType = CommandType.StoredProcedure;
+                    Command.Parameters.AddWithValue("@Emp_Name", employee.Emp_Name);
+                    employee = new Employee();
+                    connection.Open();
+                    SqlDataReader reader = Command.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            employee.Emp_Id = (int)reader["Emp_Id"];
+                            employee.Emp_Name = (string)reader["Emp_Name"];
+                            employee.Salary = (int)reader["Salary"];
+                            employee.Joining_Date = (DateTime)reader["Joining_Date"];
+                            employee.Gender = (string)reader["Gender"];
+                            employee.Department = (string)reader["Department"];
+                            employee.Address = (string)reader["Address"];
+                            employee.Deductions = (int)reader["Deductions"];
+                            employee.Taxable_Pay = (int)reader["Taxable_Pay"];
+                            employee.Income_Tax = (int)reader["Income_Tax"];
+                            employee.Net_Pay = (int)reader["Net_Pay"];
+                            Console.WriteLine(employee.Emp_Id + "," + employee.Emp_Name + "," + employee.Salary + "," + employee.Joining_Date + "," + employee.Gender + "," + employee.Department);
+
+                        }
+                        connection.Close();
+                        return employee;
+                    }
+                }
+            }
+            catch (EmployeeException)
+            {
+                throw new EmployeeException(EmployeeException.ExceptionType.No_Data_Found, "Data not found...");
             }
             return null;
         }
