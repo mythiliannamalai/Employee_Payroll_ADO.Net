@@ -28,6 +28,15 @@ namespace EmployeePayrollTesting
             var res = EmployeePayroll.Updata_Salary(employee);
             Assert.AreEqual(employee.Emp_Name,res.Emp_Name);
         }
-        
+        //UC-5 get data feom partular date testing
+        [Test]
+        public void EmployeeDataFromDateRangeTesting()
+        {
+            Employee emp = new Employee();
+            var From_Date = Convert.ToDateTime("2022-04-01");
+            var toDate = Convert.ToDateTime("2022-04-25");
+            var res = EmployeePayroll.GetEmployeeData_FromDateRange(From_Date, toDate);
+            Assert.AreEqual(7, res.Count);
+        }
     }
 }
