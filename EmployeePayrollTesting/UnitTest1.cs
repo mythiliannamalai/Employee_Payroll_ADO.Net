@@ -38,5 +38,26 @@ namespace EmployeePayrollTesting
             var res = EmployeePayroll.GetEmployeeData_FromDateRange(From_Date, toDate);
             Assert.AreEqual(7, res.Count);
         }
+        //UC-7 && 8 Add Contact testing
+        [Test]
+        public void Add_ContactTesting()
+        {
+            Employee emp = new Employee();
+            EmployeePayroll employeePayroll = new EmployeePayroll();
+            emp.Emp_Name = "Sumathi";
+            emp.Salary = 70000;
+            string JD = "2022-04-26";
+            DateTime Joindate = Convert.ToDateTime(JD);
+            emp.Joining_Date = Joindate;
+            emp.Gender = "F";
+            emp.Department = "Sales";
+            emp.Address = "tamilnadu";
+            emp.Deductions = 10000;
+            emp.Taxable_Pay = 1000;
+            emp.Income_Tax = 2000;
+            emp.Net_Pay = 50000;
+            var res = employeePayroll.Add_Contact(emp);
+            Assert.AreEqual(emp.Emp_Name, res.Emp_Name);
+        }
     }
 }
