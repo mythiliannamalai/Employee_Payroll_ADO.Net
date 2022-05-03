@@ -219,6 +219,61 @@ namespace EmployeePayrollService
             }
             return null;
         }
+        //UC-11 Add emp details
+        public Employee Add_EmpDetails(Employee emp)
+        {
+            List<Employee> employees = new List<Employee>();
+            SqlConnection connection = new SqlConnection(connectionString);
+            try
+            {
+                using (connection)
+                {
+                    string spname = "dbo.Add_Empoloyee";
+                    SqlCommand Command = new SqlCommand(spname, connection);
+                    Command.Parameters.AddWithValue("@Emp_Name", emp.Emp_Name);
+                    Command.Parameters.AddWithValue("@Salary", emp.Salary);
+                    Command.Parameters.AddWithValue("@Joining_Date", emp.Joining_Date);
+                    Command.Parameters.AddWithValue("@Gender", emp.Gender);
+                    Command.Parameters.AddWithValue("@Department", emp.Department);
+                    Command.Parameters.AddWithValue("@Address", emp.Address);
+                    Command.Parameters.AddWithValue("@Pnone_number", emp.Phone_number);
+                    Command.Parameters.AddWithValue("@Deductions", emp.Deductions);
+                    Command.Parameters.AddWithValue("@Taxable_Pay", emp.Taxable_Pay);
+                    Command.Parameters.AddWithValue("@Income_Tax", emp.Income_Tax);
+                    Command.Parameters.AddWithValue("@Net_Pay", emp.Net_Pay);
+                    emp = new Employee();
+                    connection.Open();
+                    SqlDataReader reader = Command.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            emp.Emp_Name = (string)reader["Emp_Name"];
+                            emp.Salary = (int)reader["Salary"];
+                            emp.Joining_Date = (DateTime)reader["Joining_Date"];
+                            emp.Gender = (string)reader["Gender"];
+                            emp.Department = (string)reader["Department"];
+                            emp.Address = (string)reader["Address"];
+                            emp.Deductions = (int)reader["Deductions"];
+                            emp.Taxable_Pay = (int)reader["Taxable_Pay"];
+                            emp.Income_Tax = (int)reader["Income_Tax"];
+                            emp.Net_Pay = (int)reader["Net_Pay"];
+                            Console.WriteLine(emp.Emp_Name + "," + emp.Salary + "," + emp.Joining_Date +
+                                "," + emp.Gender + "," + emp.Department + emp.Address + "," + emp.Deductions + "," + emp.Taxable_Pay +
+                                "," + emp.Income_Tax + "," + emp.Net_Pay);
+                        }
+                        connection.Close();
+                        return emp;
+                    }
+                }
+            }
+
+            catch (EmployeeException)
+            {
+                throw new EmployeeException(EmployeeException.ExceptionType.No_Data_Found, "Contact not added...");
+            }
+            return null;
+        }
         static void Main(string[]args)
         {
             EmployeePayroll.EstablishConnection();
