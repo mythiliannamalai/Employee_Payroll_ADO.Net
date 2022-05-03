@@ -59,5 +59,25 @@ namespace EmployeePayrollTesting
             var res = employeePayroll.Add_Contact(emp);
             Assert.AreEqual(emp.Emp_Name, res.Emp_Name);
         }
+        //UC-11 Add emp details
+        public void Add_EmpDetails()
+        {
+            Employee emp = new Employee();
+            EmployeePayroll employeePayroll = new EmployeePayroll();
+            emp.Emp_Name = "Saravanan";
+            emp.Salary = 75000;
+            string JD = "2022-04-26";
+            DateTime Joindate = Convert.ToDateTime(JD);
+            emp.Joining_Date = Joindate;
+            emp.Gender = "F";
+            emp.Department = "Sales";
+            emp.Address = "tamilnadu";
+            emp.Deductions = 10000;
+            emp.Taxable_Pay = 1000;
+            emp.Income_Tax = 2000;
+            emp.Net_Pay = 50000;
+            var res = employeePayroll.Add_Contact(emp);
+            Assert.AreEqual(emp.Emp_Name, res.Emp_Name);
+        }
     }
 }
