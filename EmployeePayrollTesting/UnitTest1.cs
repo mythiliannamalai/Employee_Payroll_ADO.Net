@@ -79,5 +79,14 @@ namespace EmployeePayrollTesting
             var res = employeePayroll.Add_Contact(emp);
             Assert.AreEqual(emp.Emp_Name, res.Emp_Name);
         }
+        //UC-12 delete emp details testing
+        [Test]
+        public void DeleteEmpDetails_Testing()
+        {
+            Employee employee = new Employee();
+            employee.Emp_Name = "Kiruba";
+            var res = EmployeePayroll.Delete_Contact(employee);
+            Assert.AreEqual(employee.Emp_Name, res.Emp_Name);
+        }
     }
 }
