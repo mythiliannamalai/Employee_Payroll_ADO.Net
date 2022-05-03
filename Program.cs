@@ -164,7 +164,7 @@ namespace EmployeePayrollService
             }
             return null;
         }       
-        //UC-7 Add Contact
+        //UC-7 && 8 Add Contact
         public Employee Add_Contact(Employee emp)
         {
             List<Employee> employees = new List<Employee>();
